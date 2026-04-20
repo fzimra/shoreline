@@ -1,0 +1,10 @@
+<svg width="720" height="520" viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="520" fill="#2f343f"/>
+  <rect y="350" width="720" height="170" fill="#1f232c"/>
+  <rect x="110" y="160" width="500" height="230" rx="14" fill="#f5f0e6"/>
+  <rect x="110" y="120" width="500" height="52" rx="8" fill="#ffb13d"/>
+  <text x="360" y="152" font-size="44" text-anchor="middle" fill="#301f0f" font-family="Verdana, sans-serif" font-weight="700">Mr. Chai</text>
+  <rect x="170" y="215" width="85" height="95" rx="6" fill="#8dc7e6"/>
+  <rect x="290" y="215" width="85" height="95" rx="6" fill="#8dc7e6"/>
+  <rect x="410" y="215" width="85" height="95" rx="6" fill="#8dc7e6"/>
+</svg>
