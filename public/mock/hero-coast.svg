@@ -1,0 +1,27 @@
+<svg width="1600" height="800" viewBox="0 0 1600 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f8ea8"/>
+      <stop offset="60%" stop-color="#2ec4b6"/>
+      <stop offset="100%" stop-color="#79d7c6"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5d14f"/>
+      <stop offset="100%" stop-color="#ddb84c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="800" fill="url(#sea)"/>
+  <path d="M1000 0C920 120 860 260 790 400C730 520 680 660 650 800L1600 800L1600 0Z" fill="url(#sand)"/>
+  <path d="M890 0C825 92 764 205 706 320C648 433 598 621 560 800" stroke="#ffffff" stroke-width="6" stroke-opacity="0.6" fill="none"/>
+  <path d="M940 0C876 118 808 256 742 380C688 482 638 642 602 800" stroke="#ffffff" stroke-width="3" stroke-opacity="0.35" fill="none"/>
+  <g fill="#3f7d36" opacity="0.9">
+    <circle cx="1090" cy="90" r="26"/>
+    <circle cx="1142" cy="132" r="21"/>
+    <circle cx="1168" cy="78" r="17"/>
+    <circle cx="1214" cy="142" r="24"/>
+    <circle cx="1260" cy="94" r="19"/>
+    <circle cx="1318" cy="134" r="23"/>
+    <circle cx="1360" cy="82" r="18"/>
+    <circle cx="1416" cy="120" r="22"/>
+  </g>
+</svg>
