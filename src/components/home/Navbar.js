@@ -60,13 +60,15 @@ export default function Navbar() {
             className="h-8 w-8 overflow-hidden rounded-full ring-2 ring-sky-100"
             aria-label="Open profile"
           >
-            <Image
-              src="/mock/avatar.svg"
-              alt="Profile avatar"
-              width={32}
-              height={32}
-              className="h-full w-full object-cover"
-            />
+            <Link href="/dashboard">
+              <Image
+                src="/mock/avatar.svg"
+                alt="Profile avatar"
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
+              />
+            </Link>
           </button>
         </nav>
       </div>
