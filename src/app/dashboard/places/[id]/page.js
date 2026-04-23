@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import DashboardBreadcrumb from "@/components/dashboard/DashboardBreadcrumb";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -57,18 +57,19 @@ export default function DashboardPlaceDetailPage() {
         <p className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
           {error || "Place not found."}
         </p>
-        <Link
-          href="/dashboard/places"
-          className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-        >
-          Back to Places
-        </Link>
       </div>
     );
   }
 
   return (
     <div>
+      <DashboardBreadcrumb
+        items={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Places", href: "/dashboard/places" },
+        ]}
+        currentLabel="Details"
+      />
       <header className="border-b border-slate-200 pb-5">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700/80">
           Place Details
@@ -126,15 +127,6 @@ export default function DashboardPlaceDetailPage() {
           {place.description}
         </p>
       </section>
-
-      <div className="mt-6">
-        <Link
-          href="/dashboard/places"
-          className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-        >
-          Back to Places
-        </Link>
-      </div>
     </div>
   );
 }

@@ -28,20 +28,33 @@ export async function PUT(req, { params }) {
     const body = await req.json();
     await connectToDatabase();
 
-    // Prevent password updates through this route (use a dedicated route for that)
-    delete body.password;
+    const user = await User.findById(id);
 
-    const updatedUser = await User.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    }).select("-password");
-
-    if (!updatedUser) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    user.username = body.username ?? user.username;
+    user.email = body.email ?? user.email;
+    user.role = body.role ?? user.role;
+
+    if (body.password) {
+      user.password = body.password;
+    }
+
+    await user.save();
+
+    const updatedUser = await User.findById(id).select("-password").lean();
+
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
+    if (error?.code === 11000) {
+      return NextResponse.json(
+        { error: "Email address is already in use" },
+        { status: 409 },
+      );
+    }
+
     return NextResponse.json({ error: "Update failed" }, { status: 400 });
   }
 }

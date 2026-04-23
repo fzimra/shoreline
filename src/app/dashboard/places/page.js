@@ -84,7 +84,7 @@ export default function DashboardPlacesPage() {
             Published
           </p>
           <p className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
-            20
+            10
           </p>
         </article>
         <article className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
