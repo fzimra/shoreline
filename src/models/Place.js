@@ -17,6 +17,8 @@ const PlaceSchema = new mongoose.Schema(
         enum: [
           "Religious",
           "Nature",
+          "Restaurant",
+          "Educational",
           "Heritage",
           "Cultural",
           "Historical",
