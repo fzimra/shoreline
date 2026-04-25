@@ -1,19 +1,50 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import connectToDatabase from "@/config/mongodb";
 import TableRowActions from "@/components/dashboard/TableRowActions";
-import User from "@/models/User";
 
-export default async function DashboardUsersPage() {
-  await connectToDatabase();
+export default function DashboardUsersPage() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState("");
 
-  const users = (await User.find({}).sort({ createdAt: -1 }).lean()).map(
-    (user) => ({
-      id: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    }),
-  );
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      setFetchError("");
+
+      try {
+        const response = await fetch("/api/users", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Failed to fetch users.");
+        }
+
+        const mappedUsers = Array.isArray(data)
+          ? data.map((user) => ({
+              id: user._id,
+              username: user.username,
+              email: user.email,
+              role: user.role,
+            }))
+          : [];
+
+        setUsers(mappedUsers);
+      } catch (error) {
+        setFetchError(error.message || "Unable to load users.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <div>
@@ -61,7 +92,25 @@ export default async function DashboardUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.length === 0 ? (
+              {isLoading ? (
+                <tr className="border-t border-slate-100">
+                  <td
+                    colSpan={4}
+                    className="px-4 py-8 text-center text-sm text-slate-500"
+                  >
+                    Loading users...
+                  </td>
+                </tr>
+              ) : fetchError ? (
+                <tr className="border-t border-slate-100">
+                  <td
+                    colSpan={4}
+                    className="px-4 py-8 text-center text-sm text-rose-600"
+                  >
+                    {fetchError}
+                  </td>
+                </tr>
+              ) : users.length === 0 ? (
                 <tr className="border-t border-slate-100">
                   <td
                     colSpan={4}
@@ -87,6 +136,11 @@ export default async function DashboardUsersPage() {
                         itemLabel="user"
                         editHref={`/dashboard/users/${user.id}/edit`}
                         deletePath={`/api/users/${user.id}`}
+                        onDeleteSuccess={() => {
+                          setUsers((current) =>
+                            current.filter((item) => item.id !== user.id),
+                          );
+                        }}
                       />
                     </td>
                   </tr>
