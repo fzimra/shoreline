@@ -1,11 +1,3 @@
-export const placeCategories = [
-  "All Places",
-  "Nature",
-  "Religious",
-  "Restaurant",
-  "Educational",
-];
-
 export const mockPlacesDetail = {
   "maruthamunai-1": {
     id: "maruthamunai-1",

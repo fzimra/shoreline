@@ -1,7 +1,5 @@
 "use client";
 
-import { use } from "react";
-import { notFound } from "next/navigation";
 import VenueDetailsNavbar from "@/components/venue/VenueDetailsNavbar";
 import SiteFooter from "@/components/home/SiteFooter";
 import BackNavigation from "@/components/venue/BackNavigation";
@@ -10,14 +8,94 @@ import VenueCategories from "@/components/venue/VenueCategories";
 import VenueDescription from "@/components/venue/VenueDescription";
 import TravelTips from "@/components/venue/TravelTips";
 import LocationSection from "@/components/venue/LocationSection";
-import { mockPlacesDetail } from "@/data/mockPlaces";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function VenueDetailsPage({ params }) {
-  const { id } = use(params);
-  const venue = mockPlacesDetail[id];
+function mapApiVenue(venue) {
+  return {
+    id: venue._id,
+    name: venue.name,
+    categories: Array.isArray(venue.category) ? venue.category : [],
+    image: venue.image_url || "/mock/beach.svg",
+    description: venue.description,
+    travelTips: Array.isArray(venue.travel_tips) ? venue.travel_tips : [],
+    location: {
+      lat: venue.location?.latitude,
+      lng: venue.location?.longitude,
+      address: venue.location?.address || "",
+      mapUrl:
+        venue.location?.latitude && venue.location?.longitude
+          ? `https://maps.google.com/maps?q=${venue.location.latitude},${venue.location.longitude}`
+          : "https://maps.google.com",
+    },
+  };
+}
 
-  if (!venue) {
-    notFound();
+export default function VenueDetailsPage() {
+  const params = useParams();
+  const id = params?.id;
+  const [venue, setVenue] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    const fetchVenue = async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(`/api/places/${encodeURIComponent(id)}`, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Failed to load venue details.");
+        }
+
+        setVenue(mapApiVenue(data));
+      } catch (fetchError) {
+        setError(fetchError.message || "Unable to load venue details.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVenue();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        <VenueDetailsNavbar />
+        <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-slate-200 bg-white px-5 py-8 text-sm text-slate-500">
+            Loading venue details...
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
+
+  if (error || !venue) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        <VenueDetailsNavbar />
+        <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-6 text-sm text-rose-700">
+            {error || "Venue not found."}
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
   }
 
   return (

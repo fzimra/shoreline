@@ -1,19 +1,77 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import PlaceCard from "@/components/home/PlaceCard";
-import { mockPlaces, placeCategories } from "@/data/mockPlaces";
+import { placeCategories } from "@/config/constants";
+
+function getPlaceCategory(place) {
+  if (Array.isArray(place.category) && place.category.length > 0) {
+    return place.category[0];
+  }
+
+  return place.category || "Other";
+}
+
+function mapApiPlace(place) {
+  return {
+    id: place._id,
+    name: place.name,
+    category: getPlaceCategory(place),
+    image: place.image_url || "/mock/beach.svg",
+    distanceKm: place.distance_km,
+    categories: Array.isArray(place.category) ? place.category : [],
+    description: place.description,
+    travelTips: Array.isArray(place.travel_tips) ? place.travel_tips : [],
+    location: place.location,
+  };
+}
 
 export default function PlacesShowcase() {
   const [activeCategory, setActiveCategory] = useState("All Places");
+  const [places, setPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredPlaces = useMemo(() => {
-    if (activeCategory === "All Places") {
-      return mockPlaces;
-    }
+  const filterCategories = ["All Places", ...new Set(placeCategories)];
 
-    return mockPlaces.filter((place) => place.category === activeCategory);
-  }, [activeCategory]);
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch("/api/places", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Failed to load places.");
+        }
+
+        setPlaces(Array.isArray(data) ? data.map(mapApiPlace) : []);
+      } catch (fetchError) {
+        setError(fetchError.message || "Unable to load places.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPlaces();
+  }, []);
+
+  const filteredPlaces =
+    activeCategory === "All Places"
+      ? places
+      : places.filter((place) => {
+          if (Array.isArray(place.categories) && place.categories.length > 0) {
+            return place.categories.includes(activeCategory);
+          }
+
+          return place.category === activeCategory;
+        });
 
   return (
     <section className="bg-slate-100 py-16">
@@ -23,7 +81,7 @@ export default function PlacesShowcase() {
         </h2>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-          {placeCategories.map((category) => (
+          {filterCategories.map((category) => (
             <button
               key={category}
               type="button"
@@ -39,15 +97,19 @@ export default function PlacesShowcase() {
           ))}
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {filteredPlaces.map((place) => (
-            // <>
-            //   <p>{place.name}</p>
-            //   <h1>{place.category}</h1>
-            // </>
-            <PlaceCard key={place.id} place={place} />
-          ))}
-        </div>
+        {isLoading ? (
+          <p className="mt-8 text-center text-sm text-slate-500">
+            Loading places...
+          </p>
+        ) : error ? (
+          <p className="mt-8 text-center text-sm text-rose-600">{error}</p>
+        ) : (
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {filteredPlaces.map((place) => (
+              <PlaceCard key={place.id} place={place} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
