@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { placeCategories } from "@/config/constants";
 
 const initialForm = {
@@ -105,6 +106,7 @@ export default function NewPlaceForm() {
         throw new Error(responseBody?.error || "Failed to create place.");
       }
 
+      toast.success("Place added successfully");
       router.replace("/dashboard/places");
       router.refresh();
     } catch (submitError) {

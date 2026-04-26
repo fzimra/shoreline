@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function TableRowActions({
   editHref,
@@ -10,6 +11,7 @@ export default function TableRowActions({
   itemLabel,
   viewHref,
   onDeleteSuccess,
+  successMessage,
 }) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -34,6 +36,9 @@ export default function TableRowActions({
       }
 
       onDeleteSuccess?.();
+      if (successMessage) {
+        toast.success(successMessage);
+      }
       router.refresh();
     } catch (deleteError) {
       setError(deleteError.message || `Unable to delete ${itemLabel}.`);

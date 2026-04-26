@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function EditUserForm({ user }) {
   const router = useRouter();
@@ -65,6 +66,7 @@ export default function EditUserForm({ user }) {
         throw new Error(responseBody?.error || "Failed to update user.");
       }
 
+      toast.success("User updated successfully");
       router.replace("/dashboard/users");
       router.refresh();
     } catch (submitError) {
