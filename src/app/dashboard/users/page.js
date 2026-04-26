@@ -136,6 +136,7 @@ export default function DashboardUsersPage() {
                         itemLabel="user"
                         editHref={`/dashboard/users/${user.id}/edit`}
                         deletePath={`/api/users/${user.id}`}
+                        successMessage="User deleted successfully"
                         onDeleteSuccess={() => {
                           setUsers((current) =>
                             current.filter((item) => item.id !== user.id),

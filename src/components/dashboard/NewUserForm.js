@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 const initialForm = {
   username: "",
@@ -67,6 +68,7 @@ export default function NewUserForm() {
         throw new Error(responseBody?.error || "Failed to create user.");
       }
 
+      toast.success("New user added successfully");
       router.replace("/dashboard/users");
       router.refresh();
     } catch (submitError) {

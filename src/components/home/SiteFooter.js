@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const footerLinks = ["Services", "Support", "Company", "Legal"];
+const footerLinks = [""];
 
 export default function SiteFooter() {
   return (

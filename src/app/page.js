@@ -1,6 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import PlacesShowcase from "@/components/home/PlacesShowcase";
-import Navbar from "@/components/home/Navbar";
+import Navbar from "@/components/common/Navbar";
 import SiteFooter from "@/components/home/SiteFooter";
 
 export default function Home() {

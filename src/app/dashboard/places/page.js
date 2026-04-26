@@ -186,6 +186,7 @@ export default function DashboardPlacesPage() {
                         viewHref={`/dashboard/places/${place.id}`}
                         editHref={`/dashboard/places/${place.id}/edit`}
                         deletePath={`/api/places/${place.id}`}
+                        successMessage="Place deleted successfully"
                         onDeleteSuccess={() => {
                           setPlaces((current) =>
                             current.filter((item) => item.id !== place.id),

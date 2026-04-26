@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { placeCategories } from "@/config/constants";
 
 const initialForm = {
@@ -160,6 +161,7 @@ export default function EditPlaceForm({ placeId }) {
         throw new Error(responseBody?.error || "Failed to update place.");
       }
 
+      toast.success("Place updated successfully");
       router.replace("/dashboard/places");
       router.refresh();
     } catch (submitError) {
