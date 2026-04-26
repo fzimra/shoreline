@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function PlaceCard({ place }) {
+export default function PlaceCard({ place, onAddToPlan }) {
   return (
     <Link href={`/places/${place.id}`}>
       <article className="group relative h-52 overflow-hidden rounded-xl bg-slate-200 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-1 hover:shadow-lg cursor-pointer">
@@ -21,10 +21,11 @@ export default function PlaceCard({ place }) {
         <button
           type="button"
           className="absolute right-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-white/95 text-slate-600 shadow hover:bg-white"
-          aria-label={`Save ${place.name}`}
+          aria-label={`Add ${place.name} to my plan`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            onAddToPlan?.(place);
           }}
         >
           +

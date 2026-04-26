@@ -1,6 +1,6 @@
 "use client";
 
-import VenueDetailsNavbar from "@/components/venue/VenueDetailsNavbar";
+import Navbar from "@/components/common/Navbar";
 import SiteFooter from "@/components/home/SiteFooter";
 import BackNavigation from "@/components/venue/BackNavigation";
 import VenueHero from "@/components/venue/VenueHero";
@@ -73,7 +73,7 @@ export default function VenueDetailsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900">
-        <VenueDetailsNavbar />
+        <Navbar />
         <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-slate-200 bg-white px-5 py-8 text-sm text-slate-500">
             Loading venue details...
@@ -87,7 +87,7 @@ export default function VenueDetailsPage() {
   if (error || !venue) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900">
-        <VenueDetailsNavbar />
+        <Navbar />
         <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-6 text-sm text-rose-700">
             {error || "Venue not found."}
@@ -100,7 +100,7 @@ export default function VenueDetailsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <VenueDetailsNavbar />
+      <Navbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <BackNavigation />

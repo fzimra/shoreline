@@ -1,5 +1,6 @@
 import { Manrope, Sora } from "next/font/google";
 import "./globals.css";
+import AppToaster from "@/components/common/AppToaster";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -22,7 +23,10 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${manrope.variable} ${sora.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <AppToaster />
+      </body>
     </html>
   );
 }

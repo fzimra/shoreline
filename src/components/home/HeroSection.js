@@ -50,7 +50,7 @@ export default function HeroSection() {
             curated day trips and immersive cultural explorations.
           </p>
         </div>
-        <SearchBar />
+        {/* <SearchBar /> */}
       </div>
     </section>
   );

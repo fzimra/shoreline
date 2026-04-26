@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PlaceCard from "@/components/home/PlaceCard";
 import { placeCategories } from "@/config/constants";
+import { addToTravelPlan } from "@/utils/travelPlanStorage";
 
 function getPlaceCategory(place) {
   if (Array.isArray(place.category) && place.category.length > 0) {
@@ -31,6 +32,7 @@ export default function PlacesShowcase() {
   const [places, setPlaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [planNotice, setPlanNotice] = useState("");
 
   const filterCategories = ["All Places", ...new Set(placeCategories)];
 
@@ -97,6 +99,12 @@ export default function PlacesShowcase() {
           ))}
         </div>
 
+        {planNotice ? (
+          <p className="mt-4 text-center text-sm font-medium text-sky-700">
+            {planNotice}
+          </p>
+        ) : null}
+
         {isLoading ? (
           <p className="mt-8 text-center text-sm text-slate-500">
             Loading places...
@@ -106,7 +114,21 @@ export default function PlacesShowcase() {
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {filteredPlaces.map((place) => (
-              <PlaceCard key={place.id} place={place} />
+              <PlaceCard
+                key={place.id}
+                place={place}
+                onAddToPlan={(selectedPlace) => {
+                  const result = addToTravelPlan(selectedPlace);
+                  setPlanNotice(
+                    result.added
+                      ? `${selectedPlace.name} added to My Plan.`
+                      : `${selectedPlace.name} is already in My Plan.`,
+                  );
+                  window.setTimeout(() => {
+                    setPlanNotice("");
+                  }, 1600);
+                }}
+              />
             ))}
           </div>
         )}
