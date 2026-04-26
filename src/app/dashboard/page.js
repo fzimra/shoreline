@@ -33,15 +33,6 @@ export default async function DashboardPage() {
             You are signed in as {session.email}.
           </p>
         </div>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/my-plan"
-            className="rounded-xl bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
-          >
-            Open My Plan
-          </Link>
-        </div>
       </div>
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
